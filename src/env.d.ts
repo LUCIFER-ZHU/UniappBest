@@ -27,6 +27,8 @@ interface ImportMetaEnv {
   readonly VITE_UPLOAD_BASEURL: string
   /** 是否清除console */
   readonly VITE_DELETE_CONSOLE: string
+  /** 微信小程序模板ID（逗号分隔） */
+  readonly VITE_WEAPP_SUBSCRIBE_TPL_IDS?: string
   // 更多环境变量...
 }
 

@@ -54,6 +54,7 @@ export default ({ command, mode }) => {
     VITE_APP_PROXY_ENABLE,
     VITE_SERVER_HAS_API_PREFIX,
     VITE_APP_PROXY_PREFIX,
+    VITE_SHOW_SOURCEMAP,
   } = env
   console.log('环境变量 env -> ', env)
 
@@ -179,9 +180,8 @@ export default ({ command, mode }) => {
       drop: VITE_DELETE_CONSOLE === 'true' ? ['console', 'debugger'] : ['debugger'],
     },
     build: {
-      sourcemap: false,
       // 方便非h5端调试
-      // sourcemap: VITE_SHOW_SOURCEMAP === 'true', // 默认是false
+      sourcemap: VITE_SHOW_SOURCEMAP === 'true', // 默认是false
       target: 'es6',
       // 开发环境不用压缩
       minify: mode === 'development' ? false : 'esbuild',
