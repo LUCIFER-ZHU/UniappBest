@@ -92,6 +92,10 @@ onShow(() => {
   console.log('onShow uniKuRoot exposeRef', uniKuRoot.value?.exposeRef)
 })
 
+onNavigationBarButtonTap((e) => {
+  console.log(e)
+})
+
 /**
  * 发送微信小程序订阅消息
  * @description 仅在微信小程序端可用：先申请用户订阅（requestSubscribeMessage），随后调用后端接口发送消息。
@@ -211,6 +215,11 @@ async function sendMpMessage(): Promise<void> {
         为了方便脚手架动态生成不同UI模板，本页的按钮统一使用UI库无关的原生button
       </view>
     </view>
-    <view class="h-6" />
+    <view class="mt-6">
+      <Test />
+    </view>
+    <view class="mt-6">
+      <Test2 />
+    </view>
   </view>
 </template>
