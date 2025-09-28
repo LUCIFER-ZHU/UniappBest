@@ -1,4 +1,3 @@
-import { VueQueryPlugin } from '@tanstack/vue-query'
 import { createSSRApp } from 'vue'
 // 引入异步组件注册函数
 import { registerComponents } from '@/components'
@@ -24,8 +23,6 @@ export function createApp() {
   app.use(routeInterceptor)
   // 注册请求拦截器
   app.use(requestInterceptor)
-  // 注册Vue Query插件
-  app.use(VueQueryPlugin)
 
   // 异步注册全局组件 - 在应用启动时自动注册
   registerComponents(app).catch((error) => {

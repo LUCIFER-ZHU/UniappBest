@@ -1,9 +1,10 @@
 import type { IDoubleTokenRes } from '@/api/types/login'
-import type { CustomRequestOptions } from '@/http/types'
+import type { CustomRequestOptions, IResponse } from '@/http/types'
 import { nextTick } from 'vue'
 import { LOGIN_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 import { isDoubleTokenMode } from '@/utils'
+import { ResultEnum } from './tools/enum'
 
 // 刷新 token 状态管理
 let refreshing = false // 防止重复刷新 token 标识
@@ -11,7 +12,7 @@ let taskQueue: (() => void)[] = [] // 刷新 token 请求队列
 
 export function http<T>(options: CustomRequestOptions) {
   // 1. 返回 Promise 对象
-  return new Promise<IResData<T>>((resolve, reject) => {
+  return new Promise<T>((resolve, reject) => {
     uni.request({
       ...options,
       dataType: 'json',
@@ -22,8 +23,13 @@ export function http<T>(options: CustomRequestOptions) {
       success: async (res) => {
         // 状态码 2xx，参考 axios 的设计
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          // 2.1 提取核心数据 res.data
-          return resolve(res.data as IResData<T>)
+          // 2.1  处理业务逻辑错误
+          const { code, data, message, msg } = res.data as IResponse<T>
+          // 0和200当做成功都很普遍，这里直接兼容两者，见 ResultEnum
+          if (code !== ResultEnum.Success0 && code !== ResultEnum.Success200) {
+            throw new Error(`请求错误[${code}]：${message || msg}`)
+          }
+          return resolve(data as T)
         }
         const resData: IResData<T> = res.data as IResData<T>
         if ((res.statusCode === 401) || (resData.code === 401)) {
@@ -170,6 +176,7 @@ export function httpDelete<T>(url: string, query?: Record<string, any>, header?:
   })
 }
 
+// 支持与 axios 类似的API调用
 http.get = httpGet
 http.post = httpPost
 http.put = httpPut

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { isApp, isAppAndroid, isAppHarmony, isAppIOS, isAppPlus, isH5, isMpWeixin, isWeb } from '@uni-helper/uni-env'
-import { http } from '@/http/http'
 import { LOGIN_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store'
 import { tabbarStore } from '@/tabbar/store'
+import RequestOpenApiComp from './components/request-openapi.vue'
 import RequestComp from './components/request.vue'
 import VBindCss from './components/VBindCss.vue'
 
@@ -57,11 +57,6 @@ function gotoAlova() {
     url: '/pages/about/alova',
   })
 }
-function gotoVueQuery() {
-  uni.navigateTo({
-    url: '/pages/about/vue-query',
-  })
-}
 function gotoSubPage() {
   uni.navigateTo({
     url: '/pages-sub/demo/index',
@@ -91,71 +86,6 @@ onReady(() => {
 onShow(() => {
   console.log('onShow uniKuRoot exposeRef', uniKuRoot.value?.exposeRef)
 })
-
-onNavigationBarButtonTap((e) => {
-  console.log(e)
-})
-
-/**
- * 发送微信小程序订阅消息
- * @description 仅在微信小程序端可用：先申请用户订阅（requestSubscribeMessage），随后调用后端接口发送消息。
- * @throws {Error} 当非微信小程序环境、模板ID缺失、或请求失败时会抛出错误
- * @returns {Promise<void>} 无返回值
- */
-async function sendMpMessage(): Promise<void> {
-  // 仅小程序端可用
-  if (!isMpWeixin) {
-    uni.showToast({ icon: 'none', title: '仅微信小程序端可用' })
-    return
-  }
-
-  // 从环境变量读取模板ID，支持多个用逗号分隔
-  const rawTplIds = import.meta.env.VITE_WEAPP_SUBSCRIBE_TPL_IDS as string | undefined
-  const tmplIds = (rawTplIds || '').split(',').map(s => s.trim()).filter(Boolean)
-  console.log(11, rawTplIds, tmplIds)
-
-  if (!tmplIds.length) {
-    uni.showModal({
-      title: '缺少模板ID',
-      content: '请在 env/.env.development 配置 VITE_WEAPP_SUBSCRIBE_TPL_IDS="tpl_id1,tpl_id2"',
-      showCancel: false,
-    })
-    return
-  }
-
-  try {
-    // 1) 申请用户订阅
-    const subRes = await uni.requestSubscribeMessage({ tmplIds })
-    // 解析用户同意的模板（值为 'accept'）
-    const acceptedTplIds = tmplIds.filter(id => (subRes as any)[id] === 'accept')
-    if (!acceptedTplIds.length) {
-      uni.showToast({ icon: 'none', title: '用户未同意订阅' })
-      return
-    }
-
-    // 2) 调用后端发送订阅消息（接口路径示例，按后端实际路由调整）
-    //    后端应根据当前登录用户或传入的 openid 完成发送
-    await http.post<any>(
-      '/wx/subscribe/send',
-      {
-        templateId: acceptedTplIds[0],
-        // 示例：业务数据由后端模板映射处理
-        payload: {
-          // title: '您的订单已发货',
-          // time: dayjs().format('YYYY-MM-DD HH:mm'),
-        },
-      },
-    )
-
-    uni.showToast({ icon: 'success', title: '消息已发送' })
-  }
-  catch (error: any) {
-    // 组件内请求需使用 try-catch 做兜底提示
-    console.error('发送订阅消息失败:', error)
-    uni.showToast({ icon: 'none', title: error?.message || '发送失败' })
-    throw error
-  }
-}
 </script>
 
 <template root="uniKuRoot">
@@ -182,6 +112,7 @@ async function sendMpMessage(): Promise<void> {
     <button class="mt-4 w-60 text-center" @click="setTabbarBadge">
       设置tabbarBadge
     </button>
+    <RequestOpenApiComp />
     <RequestComp />
     <VBindCss />
     <view class="mb-6 h-1px bg-#eee" />
@@ -196,18 +127,8 @@ async function sendMpMessage(): Promise<void> {
       </button>
     </view>
     <view class="text-center">
-      <button type="primary" size="mini" class="w-160px" @click="gotoVueQuery">
-        vue-query 示例页面
-      </button>
-    </view>
-    <view class="text-center">
       <button type="primary" size="mini" class="w-160px" @click="gotoSubPage">
         前往分包页面
-      </button>
-    </view>
-    <view class="text-center">
-      <button type="primary" size="mini" class="w-160px" @click="sendMpMessage">
-        小程序通知消息
       </button>
     </view>
     <view class="mt-6 text-center text-sm">
@@ -215,11 +136,6 @@ async function sendMpMessage(): Promise<void> {
         为了方便脚手架动态生成不同UI模板，本页的按钮统一使用UI库无关的原生button
       </view>
     </view>
-    <view class="mt-6">
-      <Test />
-    </view>
-    <view class="mt-6">
-      <Test2 />
-    </view>
+    <view class="h-6" />
   </view>
 </template>

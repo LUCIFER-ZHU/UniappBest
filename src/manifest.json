@@ -92,11 +92,15 @@
     "usingComponents": true,
     "optimization": {
       "subPackages": true
-    }
+    },
+    "mergeVirtualHostAttributes": true
   },
   "mp-alipay": {
     "usingComponents": true,
-    "styleIsolation": "shared"
+    "styleIsolation": "shared",
+    "optimization": {
+      "subPackages": true
+    }
   },
   "mp-baidu": {
     "usingComponents": true

@@ -12,6 +12,6 @@ export function foo() {
       page: 1,
       pageSize: 10,
     },
-    meta: { domain: API_DOMAINS.DEFAULT }, // 用于切换请求地址
+    meta: { domain: API_DOMAINS.SECONDARY }, // 用于切换请求地址
   })
 }
