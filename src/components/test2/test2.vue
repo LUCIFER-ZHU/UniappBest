@@ -5,6 +5,12 @@
 <template>
   <view class="test2-container">
     <text class="test2-title">Test2 同步组件</text>
+    <wd-tabbar v-model="tabbar">
+      <wd-tabbar-item title="首页" icon="home" />
+      <wd-tabbar-item title="分类" icon="cart" />
+      <wd-tabbar-item title="我的" icon="user" />
+    </wd-tabbar>
+    <wd-navbar title="标题" />
     <text class="test2-desc">这是一个同步注册的全局组件，在应用启动时立即可用</text>
     <view class="test2-content">
       <text>计数器: {{ count }}</text>
@@ -18,6 +24,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const tabbar = ref(1)
 /**
  * 组件状态
  */

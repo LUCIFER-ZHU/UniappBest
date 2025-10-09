@@ -30,10 +30,6 @@
         "pagePath": "pages/index/index"
       },
       {
-        "text": "关于",
-        "pagePath": "pages/about/about"
-      },
-      {
         "text": "我的",
         "pagePath": "pages/me/me"
       }
@@ -49,42 +45,6 @@
       }
     },
     {
-      "path": "pages/about/about",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "关于"
-      },
-      "excludeLoginPath": false
-    },
-    {
-      "path": "pages/about/alova",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "Alova 演示"
-      }
-    },
-    {
-      "path": "pages/about/vue-query",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "Vue Query 演示"
-      }
-    },
-    {
-      "path": "pages/login/login",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "登录"
-      }
-    },
-    {
-      "path": "pages/login/register",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "注册"
-      }
-    },
-    {
       "path": "pages/me/me",
       "type": "page",
       "style": {
@@ -94,13 +54,63 @@
   ],
   "subPackages": [
     {
+      "root": "pages-fg",
+      "pages": [
+        {
+          "path": "404/index",
+          "type": "page",
+          "style": {
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "login/login",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "登录"
+          }
+        },
+        {
+          "path": "login/register",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "注册"
+          }
+        }
+      ]
+    },
+    {
       "root": "pages-sub",
       "pages": [
+        {
+          "path": "about/about",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "关于"
+          },
+          "excludeLoginPath": false
+        },
+        {
+          "path": "about/alova",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "Alova 演示"
+          }
+        },
         {
           "path": "demo/index",
           "type": "page",
           "style": {
             "navigationBarTitleText": "分包页面"
+          }
+        },
+        {
+          "path": "demo/scroll",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "下拉刷新和下拉加载更多",
+            "enablePullDownRefresh": true,
+            "onReachBottomDistance": 100
           }
         }
       ]
